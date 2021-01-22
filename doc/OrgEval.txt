@@ -1,0 +1,128 @@
+*OrgEval.txt* vim plugin for evaluating org source blocks
+
+                      ___            _____            _ ~~
+                     / _ \ _ __ __ _| ____|_   ____ _| |~
+                    | | | | '__/ _` |  _| \ \ / / _` | |~~
+                    | |_| | | | (_| | |___ \ V / (_| | |~
+                     \___/|_|  \__, |_____| \_/ \__,_|_|~
+                               |___/                    ~
+
+             All the joy of org mode, none of the bloat of emacs!
+    (It's a joke, this plugin just provides the evaluation functionality)
+
+==============================================================================
+CONTENTS                                                     *OrgEvalContents*
+
+    1. Intro ........................................|OrgEvalIntro|
+    2. Functionality provided .......................|OrgEvalFunctionality|
+    3. Commands .....................................|OrgEvalCommands|
+    4. Global options ...............................|OrgEvalGlobalOptions|
+    5. Mappings .....................................|OrgEvalMappings|
+
+
+==============================================================================
+1. Intro                                                        *OrgEvalIntro*
+
+OrgEval is a simple plugin for evaluating emacs' org mode source blocks. It
+works by saving the contents of a source block to a temporary file, evaluating
+it using a configurable command, and putting the results in the current buffer.
+
+The result of a source block in OrgEval is collected from stdout, so all
+source blocks must send output to stdout in order for it to work (this is
+different from org mode, in which the last returned value is used).
+
+==============================================================================
+2. Functionality provided                       *OrgEvalFunctionalityProvided*
+
+OrgEval provides two functionalities:
+
+    * Source block evaluation
+    * Ability to edit and update source blocks (like in org mode)
+
+==============================================================================
+3. Commands                                                  *OrgEvalCommands*
+
+:OrgEval                                                            *:OrgEval*
+
+Evaluates the current source block and appends the result on the line after
+it. For this command to be succesful, the cursor must be between a
+line matching |org_eval_start_src| and a line matching |org_eval_end_src|.
+
+:OrgEdit                                                            *:OrgEdit*
+
+Opens a split window with the contents of the current source block. Again, the
+cursor must be in a valid range for this command to work.
+
+When this command runs, the start and end positions of the current source
+block are saved in order to be able to update it with the edits, if any.
+
+:OrgFinishEdit                                                *:OrgFinishEdit*
+
+Closes the editing window and updates the edited source block.
+
+==============================================================================
+4. Global options                                       *OrgEvalGlobalOptions*
+
+                                                         *'org_eval_map_keys'*
+Type: boolean
+Default: 1
+Whether to activate the default mappings or not. See |OrgEval_mappings|.
+                                                        *'org_eval_start_src'*
+Type: string
+Default: '#+begin_src'
+String that will be used to match case-insensitively the start of a source
+block. This means that, using the default value, both '#+begin_src' and
+'#+BEGIN_SRC' mark the start of a source block.
+                                                          *'org_eval_end_src'*
+Type: string
+Default: '#+end_src'
+String that will be used to match the end of a source block. As with
+|'OrgEval_start_src'|, this string will be matched case-insensitively.
+                                                         *'org_eval_tmp_file'*
+Type: string
+Default: |tempname()|
+Name of the temporary file to use to evaluate source blocks.
+                                                        *'org_eval_edit_file'*
+Type: string
+Default: `tempname() + '.org'`
+Name of the temporary file to use to edit source blocks. It is recommended
+that the name ends in '.org' in order to be able to access this OrgEval's
+commands and mappings from the editing buffer.
+                                                          *'org_eval_run_cmd'*
+Type: dictionary
+Default: { 'python': 'python3',
+           'clojure': 'clojure',
+           'haskell': 'runhaskell',
+           'sh': 'sh',
+           'bash': 'bash',
+           'awk': 'awk -f',
+           'java': 'java --source 11',
+            'c': 'tcc -run' }
+Dictionary of commands to run when evaluating source blocks. Each item
+must be of the form `lang:command` where `lang` is a string that matches the
+filetype of the target language, and `command` is the command to run when
+evaluating a source block of that language.
+
+If you want to add more langs, you'll have to copy the defaults and extend it
+in your |vimrc| , or you can just start from scratch and add only
+those languages you do use. Feel free to submit a pull request to
+https://github.com/aloussase/OrgEval.vim to add more langs.
+
+==============================================================================
+5. Mappings                                                  *OrgEvalMappings*
+
+<C-c><C-c>                                      *Eval*
+                Evaluates the current source block.
+<C-c><C-e>                                      *Edit*
+                Edit the current source block.
+<C-c><C-f>                                      *FinishEdit*
+                Exit editing buffer, saving changes and updating 
+                the current source block.
+<C-c>'                                          *ToggleEdit*
+                If editing, close the editing window and save changes,
+                otherwise, if inside a source block, open a split
+                window to edit it.
+
+==============================================================================
+
+ vim:tw=78:sw=4:ft=help:norl:
