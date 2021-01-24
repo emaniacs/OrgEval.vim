@@ -2,7 +2,7 @@
 " File:       org_eval.vim
 " Description: vim plugin for evaluating source blocks in org files
 " Maintainer: Alexander Goussas <agoussas@espol.edu.ec>
-" License: TODO
+" License: MIT
 " ==============================================================================
 
 " Global options {{{
