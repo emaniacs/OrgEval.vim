@@ -30,6 +30,7 @@ if !exists("g:org_eval_run_cmd") " {{{
         \ 'awk': 'awk -f',
         \ 'java': 'java --source 11',
         \ 'c': 'tcc -run',
+        \ 'javascript': 'nodejs',
         \}
 endif " }}}
 
