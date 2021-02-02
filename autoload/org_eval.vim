@@ -1,8 +1,8 @@
 " ==============================================================================
-" File:       org_eval.vim
+" File:        org_eval.vim
 " Description: vim plugin for evaluating source blocks in org files
-" Maintainer: Alexander Goussas <agoussas@espol.edu.ec>
-" License: MIT
+" Maintainer:  Alexander Goussas <agoussas@espol.edu.ec>
+" License:     MIT
 " ==============================================================================
 
 " Global options {{{
@@ -31,6 +31,7 @@ if !exists("g:org_eval_run_cmd") " {{{
         \ 'java': 'java --source 11',
         \ 'c': 'tcc -run',
         \ 'javascript': 'nodejs',
+        \ 'perl': 'perl',
         \}
 endif " }}}
 
