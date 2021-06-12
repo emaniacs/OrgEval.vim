@@ -167,7 +167,7 @@ function! org_eval#OrgEval() abort " {{{
   let cmd   = get(g:org_eval_run_cmd, lang, "")
   if !empty(cmd)
     call s:writeSrcBlock(block['lines'])
-    let result = split(system(cmd . ' ' . g:org_eval_tmp_file) , '\n')
+    let result = systemlist(cmd . ' ' . g:org_eval_tmp_file)
     if len(result) <= 0 " if no result
       let result = ['']
     endif
