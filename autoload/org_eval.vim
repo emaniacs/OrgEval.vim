@@ -163,18 +163,22 @@ function! org_eval#OrgEval() abort " {{{
   let block = s:getSrcBlock()
 
   if !empty(block)
-    let lang  = s:getLang(block['start'])
-    let cmd   = get(g:org_eval_run_cmd, lang, "")
-    if !empty(cmd)
-      call s:writeSrcBlock(block['lines'])
-      let result = split(system(cmd . ' ' . g:org_eval_tmp_file) , '\n')
+  let lang  = s:getLang(block['start'])
+  let cmd   = get(g:org_eval_run_cmd, lang, "")
+  if !empty(cmd)
+    call s:writeSrcBlock(block['lines'])
+    let result = split(system(cmd . ' ' . g:org_eval_tmp_file) , '\n')
+    if len(result) > 0 " if result
       call append(block['end'], 'RESULT: ' . result[0])
-	  let lnum = block['end']+1
+      let lnum = block['end']+1
+	  " append multi line output
       for line in result[1:] " every line after the first
         call append(lnum, '      : ' . line)
         let lnum = lnum + 1
-      endfor
-
+        endfor
+    else " if no result
+      call append(block['end'], 'RESULT: ')
+    endif
     else
       if empty(lang)
         echo 'Language not specified'
